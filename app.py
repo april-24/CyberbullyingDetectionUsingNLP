@@ -23,8 +23,8 @@ st.set_page_config(page_title="Cyberbully Comment Detection", page_icon="🛡️
 
 NB_PATH = "results/model_nb.joblib"
 SVM_PATH = "results/model_svm.joblib"
-LSTM_PATH = "results/model_bilstm.keras"
-LSTM_TOK = "results/bilstm_tokenizer.pkl"
+#LSTM_PATH = "results/model_bilstm.keras"
+#LSTM_TOK = "results/bilstm_tokenizer.pkl"
 
 
 @st.cache_resource
@@ -33,14 +33,14 @@ def load_sklearn(path):
 
 
 @st.cache_resource
-def load_lstm():
-    if not (os.path.exists(LSTM_PATH) and os.path.exists(LSTM_TOK)):
-        return None
-    import tensorflow as tf
-    model = tf.keras.models.load_model(LSTM_PATH)
-    with open(LSTM_TOK, "rb") as f:
-        meta = pickle.load(f)
-    return {"model": model, **meta}
+#def load_lstm():
+#    if not (os.path.exists(LSTM_PATH) and os.path.exists(LSTM_TOK)):
+#        return None
+#    import tensorflow as tf
+#    model = tf.keras.models.load_model(LSTM_PATH)
+#    with open(LSTM_TOK, "rb") as f:
+#        meta = pickle.load(f)
+#    return {"model": model, **meta}
 
 
 def predict_sklearn(bundle, text):
@@ -49,13 +49,13 @@ def predict_sklearn(bundle, text):
     return dict(zip(bundle["labels"], pred))
 
 
-def predict_lstm(bundle, text):
-    from tensorflow.keras.preprocessing.sequence import pad_sequences
-    cleaned = clean_text(text)
-    seq = bundle["tokenizer"].texts_to_sequences([cleaned])
-    seq = pad_sequences(seq, maxlen=bundle["max_len"], padding="post", truncating="post")
-    probs = bundle["model"].predict(seq, verbose=0)[0]
-    return {lab: int(p >= 0.5) for lab, p in zip(bundle["labels"], probs)}
+#def predict_lstm(bundle, text):
+#    from tensorflow.keras.preprocessing.sequence import pad_sequences
+#    cleaned = clean_text(text)
+#    seq = bundle["tokenizer"].texts_to_sequences([cleaned])
+#    seq = pad_sequences(seq, maxlen=bundle["max_len"], padding="post", truncating="post")
+#    probs = bundle["model"].predict(seq, verbose=0)[0]
+#    return {lab: int(p >= 0.5) for lab, p in zip(bundle["labels"], probs)}
 
 
 st.title("🛡️ Cyberbully Comment Detection")
@@ -67,8 +67,8 @@ if load_sklearn(NB_PATH):
     available["Naive Bayes"] = ("nb", load_sklearn(NB_PATH))
 if load_sklearn(SVM_PATH):
     available["Linear SVM"] = ("svm", load_sklearn(SVM_PATH))
-if load_lstm():
-    available["BiLSTM"] = ("lstm", load_lstm())
+#if load_lstm():
+#    available["BiLSTM"] = ("lstm", load_lstm())
 
 if not available:
     st.warning("No trained models found in results/. Train a model first "
@@ -81,7 +81,7 @@ text = st.text_area("Enter a comment to analyze:",
 
 if st.button("Analyze", type="primary"):
     kind, bundle = available[choice]
-    result = predict_lstm(bundle, text) if kind == "lstm" else predict_sklearn(bundle, text)
+    #result = predict_lstm(bundle, text) if kind == "lstm" else predict_sklearn(bundle, text)
 
     flagged = [lab for lab, v in result.items() if v == 1]
     if flagged:
