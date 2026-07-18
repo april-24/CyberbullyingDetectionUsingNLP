@@ -1,0 +1,4 @@
+model,subset_accuracy,hamming_loss,f1_micro,f1_macro,precision_micro,recall_micro
+Naive Bayes (TF-IDF),0.2832,0.1823,0.6039,0.4179,0.7398,0.5101
+Linear SVM (TF-IDF),0.3461,0.1747,0.6852,0.6516,0.673,0.6979
+BiLSTM (Deep Learning),0.4115,0.1572,0.6588,0.5287,0.8057,0.5571

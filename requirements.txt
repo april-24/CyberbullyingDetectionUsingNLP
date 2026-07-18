@@ -1,0 +1,15 @@
+# Core
+pandas
+numpy
+scikit-learn
+matplotlib
+joblib
+
+# NLP preprocessing
+nltk
+
+# Deep learning (Member 3 - BiLSTM). Heavy: ~500MB. Skip if you only run NB/SVM.
+tensorflow
+
+# Demo UI
+streamlit
